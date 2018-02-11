@@ -1,0 +1,31 @@
+﻿@using CaptchaMvc.HtmlHelpers
+@{
+    ViewBag.Title = "Applicant Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using System.Net.Mime
+@model ExampleApplicationMVC.Models.Applicant
+
+@{
+    ViewBag.Title = "Welcome";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-center">
+    <h2>Terms of Service</h2>
+    <div>
+            <h4 >
+                blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+                blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+                blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+                blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah blah
+            </h4>
+    </div>
+        <br />
+    <button type="button" class="btn btn-default btn-block btn-lg myBackgroundButton"  onclick="location.href='@Url.Action("Application", "Home")'">I Agree</button>
+    <br />
+    <h4><a href="https://www.google.com" class="text-primary">Leave</a></h4>
+
+</div>
+

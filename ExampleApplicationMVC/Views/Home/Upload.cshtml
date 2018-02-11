@@ -1,0 +1,36 @@
+﻿@model ExampleApplicationMVC.Models.Applicant
+
+@{
+    ViewBag.Title = "Application Portfolio";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Portfolio Upload</h2>
+<form action="Upload" method="post" enctype="multipart/form-data">
+    <div>
+        <h3>@Model.Name, please upload your portfolio</h3>
+        @Html.AntiForgeryToken()
+        <input type="file" id="myFile"/>
+        <br/>
+        <label id="fileLabel" class="btn btn-default myBackgroundButton" for ="myFile">Choose a File</label>
+        <br/>
+        <input type="button" value="Upload" id="myButton" class="btn btn-default myBackgroundButton"/>
+        
+
+    </div>
+    <br />
+    <label id="uploadsLabel">Current Uploads</label>
+    <div id="uploads">
+    </div>
+    <div>
+        @Html.HiddenFor(model => model.Name, Model.Name)
+        @Html.HiddenFor(model => model.Age, Model.Age.ToString())
+        @Html.HiddenFor(model => model.Email, Model.Email)
+        @Html.HiddenFor(model => model.AboutYou, Model.AboutYou)
+        @Html.HiddenFor(model => model.Experience, Model.Experience)
+        @Html.HiddenFor(model => model.SkillsTalents, Model.SkillsTalents)
+    </div>
+    <br />
+    @Html.ActionLink("Complete Application", "Successful", "Home", new { id = "finishButton" })
+    <br />
+</form>
