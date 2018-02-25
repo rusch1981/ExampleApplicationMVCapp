@@ -27,8 +27,22 @@ namespace ExampleApplicationMVC.Models
         [Required(ErrorMessage = _errorMessage)]
         [DisplayName("Special Skills and Talents")]
         public string SkillsTalents { get; set; }
-        public HttpPostedFile File { get; set; }
+        public string FileName { get; set; }
+        public HttpPostedFile File
+        {
+            get
+            {
+                return _file;
+            }
+            set
+            {
+                FileName = Guid.NewGuid() + value.FileName;
+                _file = value;
+            }
+        }
 
+
+        private HttpPostedFile _file;
         private string _message = null;
 
         public string Message

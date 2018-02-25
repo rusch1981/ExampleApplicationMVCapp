@@ -32,8 +32,8 @@ namespace ExampleApplicationMVC.DependencyResolution {
                 });
             //For<IExample>().Use<Example>();
             For<IEmailUtil>().Singleton().Use<EmailUtil>();
-            For<ISaveApplicant>().Use<SaveApplicantTxt>();
-            For<IProcessApplicants>().Use<ProcessApplicantsTxt>();
+            For<ISaveApplicant>().Use<SaveApplicantDb>();
+            For<IProcessApplicants>().Use<ProcessApplicantsDb>();
         }
 
         #endregion
