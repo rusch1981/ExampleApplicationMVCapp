@@ -246,6 +246,9 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <EmbeddedResource Include="Sql\GetIncompleteApplicantIds.sql" />
+    <EmbeddedResource Include="Sql\SetApplicantToComplete.sql" />
+    <EmbeddedResource Include="Sql\GetApplicant.sql" />
     <Content Include="Uploads\UploadFiles\skull-bike-dark-fire-wallpaper-skeleton-wallpapers-ghost-rider.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

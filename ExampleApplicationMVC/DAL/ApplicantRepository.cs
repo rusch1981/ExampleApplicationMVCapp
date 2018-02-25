@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using Dapper;
+using ExampleApplicationMVC.DAL;
 using ExampleApplicationMVC.Models;
 using ExampleApplicationMVC.Utilities;
 
@@ -12,10 +14,16 @@ namespace ExampleApplicationMVC.DAL
 {
     public class ApplicantRepository
     {
+        private const string GetIncompleteApplicantIdsSqlFile = @"Sql/GetIncompleteApplicantIds.sql";
+        private const string SetApplicantToCompleteSqlFile = @"Sql/SetApplicantToComplete.sql";
+        private const string GetApplicantSqlFile = @"Sql/GetApplicant.sql";
+
+
         public void CreateApplicant(Applicant applicant)
         {
-            using(IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
+            using (IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
             {
+                //called SP on DB
                 connection.Execute("dbo.Add_Applicant @Name, @Age, @Email, @AboutYou, @Experience, @SkillsTalents, @FileName", applicant);
             }
         }
@@ -24,9 +32,9 @@ namespace ExampleApplicationMVC.DAL
         {
             using (IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
             {
-                //todo remove to sql file
-                string sqlQuery = "SELECT Id FROM Application.dbo.Applicants WHERE Complete = 'false'";
-                return connection.Query<int>(sqlQuery).ToList();
+                //get sql string from embedded resource
+                var getIncompleteApplicantIdsStatement = ReadEmbeddedResource(GetIncompleteApplicantIdsSqlFile);                
+                return connection.Query<int>(getIncompleteApplicantIdsStatement).ToList();
             }
         }
 
@@ -34,9 +42,8 @@ namespace ExampleApplicationMVC.DAL
         {
             using (IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
             {
-                //todo remove to sql file
-                string sqlQuery = $"update dbo.Applicants set Complete = 'true' where Id = {id}";
-                return connection.Query<int>(sqlQuery).ToList();
+                var getSetApplicantToCompleteSqlFileStatement = ReadEmbeddedResource(SetApplicantToCompleteSqlFile) + id;
+                return connection.Query<int>(getSetApplicantToCompleteSqlFileStatement).ToList();
             }
         }
 
@@ -44,10 +51,24 @@ namespace ExampleApplicationMVC.DAL
         {
             using (IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
             {
-                //todo remove to sql file
-                string sqlQuery = $"SELECT * FROM Application.dbo.Applicants WHERE Id = {id}";
-                return connection.Query<Applicant>(sqlQuery).First();
+                var getGetApplicantSqlFileStatement = ReadEmbeddedResource(GetApplicantSqlFile) + id;
+                return connection.Query<Applicant>(getGetApplicantSqlFileStatement).First();
             }
+        }
+
+        private static string ReadEmbeddedResource(string resourceName)
+        {
+            string content;
+            var assembly = typeof(ApplicantRepository).Assembly;
+            resourceName = $"{assembly.GetName().Name}.{resourceName.Replace(" ", "_").Replace("\\", ".").Replace("/", ".")}";
+            using (var resourceStream = assembly.GetManifestResourceStream(resourceName))
+            {
+                using (var reader = new StreamReader(resourceStream))
+                {
+                    content = reader.ReadToEnd();
+                }
+            }
+            return content;
         }
     }
 }

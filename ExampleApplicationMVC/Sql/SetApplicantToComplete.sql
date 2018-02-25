@@ -1,0 +1,1 @@
+﻿update dbo.Applicants set Complete = 'true' where Id =

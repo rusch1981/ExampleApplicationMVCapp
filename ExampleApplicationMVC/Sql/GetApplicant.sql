@@ -1,0 +1,1 @@
+﻿SELECT * FROM Application.dbo.Applicants WHERE Id = 
