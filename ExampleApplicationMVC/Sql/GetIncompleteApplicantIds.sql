@@ -1,0 +1,1 @@
+﻿SELECT Id FROM Application.dbo.Applicants WHERE Complete = 'false'
