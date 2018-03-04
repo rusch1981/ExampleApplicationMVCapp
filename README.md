@@ -1,2 +1,2 @@
 # ExampleApplicationMVCapp
-Example MVC Application including AJAX, Dapper, Bootstrap,  etc.
+Example MVC Application including AJAX, Dapper, Bootstrap, StructureMap  etc.
