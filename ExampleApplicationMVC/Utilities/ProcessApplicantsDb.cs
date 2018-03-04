@@ -8,18 +8,22 @@ namespace ExampleApplicationMVC.Utilities
     public class ProcessApplicantsDb : IProcessApplicants
     {
         private readonly string _fileLocation = HttpContext.Current.Server.MapPath("~") + "/Uploads/UploadFiles/";
-        private EmailUtil _emailemailUtil;
+        private IEmailUtil _emailemailUtil;
         private ApplicantRepository _applicantRepository;
+
+        public ProcessApplicantsDb(ApplicantRepository applicantRepository, IEmailUtil emailUtil)
+        {
+            _applicantRepository = applicantRepository;
+            _emailemailUtil = emailUtil;
+        }
 
         public void Process()
         {
-            Init();
-
             var ids = _applicantRepository.GetIncompleteApplicants();
 
             foreach(var id in ids)
             {
-                Applicant applicant = NewMethod(id);
+                Applicant applicant = GetApplicant(id);
                 _emailemailUtil.SendEmail(GetName_Id(id, applicant), applicant.Message, GetFilePath(applicant));
                 File.Delete(GetFilePath(applicant));
                 _applicantRepository.SetApplicantToComplete(id);
@@ -36,15 +40,9 @@ namespace ExampleApplicationMVC.Utilities
             return _fileLocation + applicant.FileName;
         }
 
-        private Models.Applicant NewMethod(int id)
+        private Models.Applicant GetApplicant(int id)
         {
             return _applicantRepository.GetApplicant(id);
-        }
-
-        private void Init()
-        {
-            _emailemailUtil = new EmailUtil();
-            _applicantRepository = new ApplicantRepository();
         }
     }
 }

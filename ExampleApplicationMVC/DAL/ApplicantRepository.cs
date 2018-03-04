@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Web;
 using Dapper;
-using ExampleApplicationMVC.DAL;
 using ExampleApplicationMVC.Models;
 using ExampleApplicationMVC.Utilities;
 
@@ -17,11 +14,11 @@ namespace ExampleApplicationMVC.DAL
         private const string GetIncompleteApplicantIdsSqlFile = @"Sql/GetIncompleteApplicantIds.sql";
         private const string SetApplicantToCompleteSqlFile = @"Sql/SetApplicantToComplete.sql";
         private const string GetApplicantSqlFile = @"Sql/GetApplicant.sql";
-
+        private static string connectionString = ConfigManager.GetConnectionString("Application");
 
         public void CreateApplicant(Applicant applicant)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
+            using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 //called SP on DB
                 connection.Execute("dbo.Add_Applicant @Name, @Age, @Email, @AboutYou, @Experience, @SkillsTalents, @FileName", applicant);
@@ -30,7 +27,7 @@ namespace ExampleApplicationMVC.DAL
 
         public List<int> GetIncompleteApplicants()
         {
-            using (IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
+            using (IDbConnection connection = new SqlConnection(connectionString))
             {
                 //get sql string from embedded resource
                 var getIncompleteApplicantIdsStatement = ReadEmbeddedResource(GetIncompleteApplicantIdsSqlFile);                
@@ -40,19 +37,19 @@ namespace ExampleApplicationMVC.DAL
 
         public List<int> SetApplicantToComplete(int id)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
+            using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                var getSetApplicantToCompleteSqlFileStatement = ReadEmbeddedResource(SetApplicantToCompleteSqlFile) + id;
-                return connection.Query<int>(getSetApplicantToCompleteSqlFileStatement).ToList();
+                var getSetApplicantToCompleteSqlFileStatement = ReadEmbeddedResource(SetApplicantToCompleteSqlFile);
+                return connection.Query<int>(getSetApplicantToCompleteSqlFileStatement, new { id = id }).ToList();
             }
         }
 
         public Applicant GetApplicant(int id)
         {
-            using (IDbConnection connection = new SqlConnection(ConfigManager.GetConnectionString("Application")))
+            using (IDbConnection connection = new SqlConnection(connectionString))
             {
-                var getGetApplicantSqlFileStatement = ReadEmbeddedResource(GetApplicantSqlFile) + id;
-                return connection.Query<Applicant>(getGetApplicantSqlFileStatement).First();
+                var getGetApplicantSqlFileStatement = ReadEmbeddedResource(GetApplicantSqlFile);
+                return connection.Query<Applicant>(getGetApplicantSqlFileStatement, new { id = id }).First();
             }
         }
 

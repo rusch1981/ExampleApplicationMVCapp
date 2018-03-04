@@ -1,1 +1,1 @@
-﻿update dbo.Applicants set Complete = 'true' where Id =
+﻿update dbo.Applicants set Complete = 'true' where Id = @id

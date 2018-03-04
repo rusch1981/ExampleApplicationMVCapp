@@ -18,6 +18,7 @@
 using ExampleApplicationMVC.Utilities;
 
 namespace ExampleApplicationMVC.DependencyResolution {
+    using ExampleApplicationMVC.DAL;
     using StructureMap.Configuration.DSL;
     using StructureMap.Graph;
 	
@@ -34,6 +35,7 @@ namespace ExampleApplicationMVC.DependencyResolution {
             For<IEmailUtil>().Singleton().Use<EmailUtil>();
             For<ISaveApplicant>().Use<SaveApplicantDb>();
             For<IProcessApplicants>().Use<ProcessApplicantsDb>();
+            For<ApplicantRepository>().Use<ApplicantRepository>();
         }
 
         #endregion

@@ -3,15 +3,14 @@ using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
 
 namespace ExampleApplicationMVC.Utilities
 {
     public class EmailUtil : IEmailUtil
     {
-        private static readonly string _Email = ConfigurationManager.AppSettings["hotmailEmail"];
-        private static readonly string _Pass = ConfigurationManager.AppSettings["emailPass"];
-        private static readonly string _ToEmail = ConfigurationManager.AppSettings["FatalErrorEmailAddress"];
+        private static readonly string _Email = ConfigManager.GetAppSetting("hotmailEmail"); 
+        private static readonly string _Pass = ConfigManager.GetAppSetting("emailPass");
+        private static readonly string _ToEmail = ConfigManager.GetAppSetting("FatalErrorEmailAddress");
         private static readonly string _VirusTotal = "scan@virustotal.com";
 
         private MailMessage mailMsg;
@@ -105,9 +104,9 @@ namespace ExampleApplicationMVC.Utilities
             mailMsg = new MailMessage();
             smtpClient = new SmtpClient();
 
-            smtpClient.Host = ConfigurationManager.AppSettings["smtpHost"];
-            smtpClient.EnableSsl = Convert.ToBoolean(ConfigurationManager.AppSettings["smtpSsl"]);
-            smtpClient.Port = Convert.ToInt16(ConfigurationManager.AppSettings["smtpPort"]);
+            smtpClient.Host = ConfigManager.GetAppSetting("smtpHost");
+            smtpClient.EnableSsl = Convert.ToBoolean(ConfigManager.GetAppSetting("smtpSsl"));
+            smtpClient.Port = Convert.ToInt16(ConfigManager.GetAppSetting("smtpPort"));
             smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtpClient.Credentials = new NetworkCredential(_Email, _Pass);
 
