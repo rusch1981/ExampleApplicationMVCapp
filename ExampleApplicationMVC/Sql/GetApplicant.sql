@@ -1,1 +1,1 @@
-﻿SELECT * FROM Application.dbo.Applicants WHERE Id = 
+﻿SELECT * FROM Application.dbo.Applicants WHERE Id = @id
